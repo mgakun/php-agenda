@@ -18,7 +18,12 @@
         <div class="alert alert-success" role="alert">
             Excluido com sucesso
         </div>
-   <?php } ?>
+<?php }elseif(isset($_GET['erro'])){?>
+<div class="container ">
+    <div class="alert alert-danger" role="alert">
+        Algo deu errado
+    </div>
+    <?php } ?>
  
     <body>
         <div class="container inicio">

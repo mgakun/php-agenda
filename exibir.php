@@ -1,21 +1,19 @@
 <?php include("header.php");
     include ("php\connection\connection.php");
-
+    $status = "I";
     if(isset($_POST['busca'])) {
-      $pesquisa = $_POST['busca'];
-    }else{
+      $pesquisa = "%{$_POST['busca']}%";
+      $stmt = $conn->prepare("SELECT * FROM cadastros WHERE nome LIKE ? AND status != ? ");
+    $stmt->bindParam(1,$pesquisa, PDO::PARAM_STR);
+    $stmt->bindParam(2,$status, PDO::PARAM_STR);
+    $stmt->execute();
+    $result = $stmt->fetch();
+    }elseif(!isset($_POST['busca'])){
       $pesquisa = '';
-      $sql = "SELECT * FROM cadastros status != 'I' ";
-    }
-
-    $sql = "SELECT * FROM cadastros WHERE nome LIKE '%$pesquisa%' AND status != 'I' ";
-
-    
-
-    
-
-    $dados = mysqli_query($conn, $sql);
-    
+      $stmt = $conn->prepare("SELECT * FROM cadastros WHERE status != ? ");
+      $stmt->bindParam(1,$status, PDO::PARAM_STR);
+      $stmt->execute();
+    }    
     ?>
  
     <body>
@@ -36,30 +34,20 @@
   </thead>
   <tbody>
 <?php 
- while($linhas = mysqli_fetch_assoc($dados)){
-    $id = $linhas['id'];
-    $nome = $linhas['nome'];
-    $email = $linhas['email'];
-    $endereco = $linhas['endereco'];
-    $telefone = $linhas['telefone'];
-  
-
-
-
-    
-   echo '<tr>
-  <th scope="row"> </th>
-  <td>'.$id.'</td>
-  <td>'.$nome.'</td>
-  <td>'.$email.'</td>
-  <td>'.$endereco.'</td>
-  <td>'.$telefone.'</td>
-
-  <td><a href="editar.php?id='.$id.'" class="btn btn-primary" >Editar</a>   <a href="php/excluir.php?id='.$id.'" class="btn btn-danger">Excluir</a></td>
-  
-  
+while ($row = $stmt->fetch()) {
+        
+  echo '<tr>
+<th scope="row"> </th>
+<td>'.$row['id'].'</td>
+<td>'.$row['nome'].'</td>
+<td>'.$row['email'].'</td>
+<td>'.$row['endereco'].'</td>
+<td>'.$row['telefone'].'</td>
+<td><a href="editar.php?id='.$row['id'].'" class="btn btn-primary" >Editar</a>   <a href="php/excluir.php?id='.$row['id'].'" class="btn btn-danger">Excluir</a></td>
 </tr>';
- }
+
+
+}
 ?>
    
   </tbody>

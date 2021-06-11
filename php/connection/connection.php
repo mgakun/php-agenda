@@ -1,15 +1,13 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$bd = "crud_php";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password ,$bd);
 
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+require_once 'config.php';
+ 
+try {
+    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    // echo "Conectado a $dbname em $host com sucesso.";
+} catch (PDOException $pe) {
+    die("Não foi possível se conectar ao banco de dados $dbname :" . $pe->getMessage());
 }
 // echo "Connected successfully";
 ?>

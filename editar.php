@@ -4,10 +4,10 @@
     
     $id = $_GET['id'];
 
-    $sql = "SELECT * FROM cadastros WHERE id = $id";
-
-    $dados = mysqli_query($conn, $sql);
-    $linha = mysqli_fetch_assoc($dados);
+    $stmt = $conn->prepare("SELECT * FROM cadastros WHERE id = ?");
+    $stmt->bindParam(1,$id, PDO::PARAM_INT);
+    $stmt->execute();
+    $row = $stmt->fetch();
     $url = "php\update.php";
     
  ?>
@@ -19,19 +19,19 @@
                 <input type="hidden" id="id" name="id">
                     <div class="form-group">
                         <label for="nome">Nome </label>
-                        <input type="text" class="form-control" id="nome" placeholder="Nome Completo" name="nome" value="<?php echo $linha['nome']; ?>">
+                        <input type="text" class="form-control" id="nome" placeholder="Nome Completo" name="nome" value="<?php echo $row['nome']; ?>">
                     </div>
                     <div class="form-group">
                         <label for="email">E-mail </label>
-                        <input type="email" class="form-control" id="email" placeholder="E-mail" name="email" value="<?php echo $linha['email']; ?>">    
+                        <input type="email" class="form-control" id="email" placeholder="E-mail" name="email" value="<?php echo $row['email']; ?>">    
                     </div>
                     <div class="form-group">
                         <label for="endereco">Endereço </label>
-                        <input type="text" class="form-control" id="endereco" placeholder="Endereço" name="endereco" value="<?php echo $linha['endereco']; ?>">
+                        <input type="text" class="form-control" id="endereco" placeholder="Endereço" name="endereco" value="<?php echo $row['endereco']; ?>">
                     </div>
                     <div class="form-group">
                         <label for="telefone">Telefone </label>
-                        <input type="text" class="form-control" id="telefone" placeholder="Telefone" name="telefone" value="<?php echo $linha['telefone']; ?>">
+                        <input type="text" class="form-control" id="telefone" placeholder="Telefone" name="telefone" value="<?php echo $row['telefone']; ?>">
                     </div>
                    
                     
